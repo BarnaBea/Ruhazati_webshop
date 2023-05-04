@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Ruházati webshop</string>
+    <string name="name">Név</string>
+    <string name="password">Jelszó</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="register">Regisztráció</string>
+    <string name="user_name">Felhasználónév</string>
+    <string name="email">E-mail cím</string>
+    <string name="password_again">Jelszó megerősítése</string>
+    <string name="cancel">Mégse</string>
+    <string name="product_description">Termék leírás</string>
+    <string name="guestlogin">Bejelentkezés vendégként</string>
+
+    <string name="title_placeholder">Title</string>
+    <string name="item_placeholder">Leírás</string>
+    <string name="item_info_placeholder">Here is some news</string>
+    <string name="subtitle_detail_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices congue rutrum. Phasellus elementum ipsum ac convallis aliquam. Suspendisse eleifend eros a enim faucibus mollis. Nunc placerat, est vitae vestibulum blandit, dolor diam fringilla tellus, eu euismod mauris neque at neque.</string>
+
+
+    <string-array name="shopping_item_names">
+        <item>Nyári blúz</item>
+        <item>Lila póló</item>
+        <item>Piros póló</item>
+
+    </string-array>
+
+    <string-array name="shopping_item_desc">
+        <item>Nyári blúz</item>
+        <item>Lila póló</item>
+        <item>Piros póló</item>
+
+    </string-array>
+
+    <array name="shopping_item_rates">
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+
+    </array>
+
+    <array name="shopping_item_images">
+        <item>@drawable/bluz</item>
+        <item>@drawable/lilapolo</item>
+        <item>@drawable/pirospolo</item>
+
+    </array>
+
+    <array name="shopping_item_price">
+        <item>100 Dv</item>
+        <item>150 Dv</item>
+        <item>500 Dv</item>
+
+    </array>
+</resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login"
+    tools:context=".LoginActivity">
+
+    <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="384dp"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217"
+        android:background="@drawable/roundedcorners"
+
+        />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="384dp"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:visibility="visible"
+        android:paddingLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.318"
+        android:background="@drawable/roundedcorners"
+        />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="254dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/lightred"
+        android:onClick="login"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <Button
+        android:id="@+id/guestLoginButton"
+        android:layout_width="256dp"
+        android:layout_height="61dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="160dp"
+        android:backgroundTint="@color/lightred"
+        android:onClick="loginAsGuest"
+        android:text="@string/guestlogin"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/googleSignInButtob"
+        android:layout_width="256dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/lightred"
+        android:onClick="loginWithGoogle"
+        android:text="Bejelentkezés google fiókkal"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guestLoginButton"
+        app:layout_constraintVertical_bias="0.128" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
