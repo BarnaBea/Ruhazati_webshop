@@ -5,7 +5,11 @@ public class ShoppingItem {
     private String info;
     private String price;
     private float ratedInfo;
-    private final int imageResource;
+    private int imageResource;
+
+    public ShoppingItem() {
+
+    }
 
     public ShoppingItem(String name, String info, String price, float ratedInfo, int imageResource) {
         this.name = name;
@@ -15,16 +19,16 @@ public class ShoppingItem {
         this.imageResource = imageResource;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
-    String getInfo() {
+    public String getInfo() {
         return info;
     }
-    String getPrice() {
+    public String getPrice() {
         return price;
     }
-    float getRatedInfo() { return ratedInfo; }
+    public float getRatedInfo() { return ratedInfo; }
     public int getImageResource() {
         return imageResource;
     }

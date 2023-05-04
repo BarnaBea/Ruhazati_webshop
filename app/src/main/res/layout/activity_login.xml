@@ -68,7 +68,7 @@
         android:layout_marginBottom="160dp"
         android:backgroundTint="@color/lightred"
         android:onClick="loginAsGuest"
-        android:text="@string/guestlogin"
+        android:text="♡♡♡♡♡"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

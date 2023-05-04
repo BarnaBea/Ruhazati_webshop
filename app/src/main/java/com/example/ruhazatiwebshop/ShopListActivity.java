@@ -8,6 +8,10 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -19,14 +23,18 @@ import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class ShopListActivity extends AppCompatActivity {
     private static final String LOG_TAG = ShopListActivity.class.getName();
-    private static final String PREF_KEY = MainActivity.class.getPackage().toString();
     private FirebaseUser user;
     private FirebaseAuth mAuth;
 
@@ -39,6 +47,10 @@ public class ShopListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ArrayList<ShoppingItem> mItemsData;
     private ShoppingItemAdapter mAdapter;
+
+    private FirebaseFirestore mFireStore;
+    private CollectionReference mItems;
+    private int queryLimit = 10;
 
     private SharedPreferences preferences;
 
@@ -69,7 +81,55 @@ public class ShopListActivity extends AppCompatActivity {
         mItemsData = new ArrayList<>();
         mAdapter = new ShoppingItemAdapter(this, mItemsData);
         mRecyclerView.setAdapter(mAdapter);
-        initializeData();
+
+        mFireStore = FirebaseFirestore.getInstance();
+        mItems = mFireStore.collection("Items");
+
+        queryData();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_POWER_CONNECTED);
+        filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+        this.registerReceiver(null, filter);
+    }
+
+    BroadcastReceiver powerReciever = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action == null)
+                return;
+
+            switch (action){
+                case Intent.ACTION_POWER_CONNECTED:
+                    queryLimit = 10;
+                    break;
+                case Intent.ACTION_POWER_DISCONNECTED:
+                    queryLimit = 5;
+                    break;
+            }
+            queryData();
+        }
+    };
+
+    private void queryData(){
+        mItemsData.clear();
+
+        //mItems.whereEqualTo();
+        mItems.orderBy("name").limit(queryLimit).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for(QueryDocumentSnapshot document: queryDocumentSnapshots){
+                ShoppingItem item = document.toObject(ShoppingItem.class);
+                mItemsData.add(item);
+            }
+            if(mItemsData.size() == 0){
+                initializeData();
+                queryData();
+            }
+            mAdapter.notifyDataSetChanged();
+
+        });
+
+
     }
 
     private void initializeData() {
@@ -83,16 +143,12 @@ public class ShopListActivity extends AppCompatActivity {
                 getResources().obtainTypedArray(R.array.shopping_item_images);
         TypedArray itemRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
 
-        mItemsData.clear();
-
         for (int i = 0; i < itemsList.length; i++) {
-            mItemsData.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemRate.getFloat(i, 0),
+            mItems.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemRate.getFloat(i, 0),
                     itemsImageResources.getResourceId(i, 0)));
         }
 
         itemsImageResources.recycle();
-
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -178,5 +234,11 @@ public class ShopListActivity extends AppCompatActivity {
         }
 
         redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(powerReciever);
     }
 }
