@@ -8,13 +8,19 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,14 +28,20 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.internal.PendingResultFacade;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -56,6 +68,10 @@ public class ShopListActivity extends AppCompatActivity {
 
     private boolean viewRow = true;
 
+    private NotificationHandler mNotificationHandler;
+    private AlarmManager mAlarmManager;
+    private JobScheduler mJobScheduler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +84,6 @@ public class ShopListActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "Unauthenticated user!");
             finish();
         }
-
-/*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-        if(preferences != null) {
-            cartItems = preferences.getInt("cartItems", 0);
-            gridNumber = preferences.getInt("gridNum", 1);
-        }*/
-
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
@@ -91,6 +100,12 @@ public class ShopListActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_POWER_CONNECTED);
         filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         this.registerReceiver(null, filter);
+
+        mNotificationHandler = new NotificationHandler(this);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        //setAlarmManager();
+        setJobScheduler();
     }
 
     BroadcastReceiver powerReciever = new BroadcastReceiver() {
@@ -116,9 +131,10 @@ public class ShopListActivity extends AppCompatActivity {
         mItemsData.clear();
 
         //mItems.whereEqualTo();
-        mItems.orderBy("name").limit(queryLimit).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        mItems.orderBy("cartedCount", Query.Direction.DESCENDING).limit(queryLimit).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for(QueryDocumentSnapshot document: queryDocumentSnapshots){
                 ShoppingItem item = document.toObject(ShoppingItem.class);
+                item.setId(document.getId());
                 mItemsData.add(item);
             }
             if(mItemsData.size() == 0){
@@ -144,11 +160,29 @@ public class ShopListActivity extends AppCompatActivity {
         TypedArray itemRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
 
         for (int i = 0; i < itemsList.length; i++) {
-            mItems.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemRate.getFloat(i, 0),
-                    itemsImageResources.getResourceId(i, 0)));
+            mItems.add(new ShoppingItem(
+                    itemsList[i],
+                    itemsInfo[i],
+                    itemsPrice[i],
+                    itemRate.getFloat(i, 0),
+                    itemsImageResources.getResourceId(i, 0),
+                    0));
         }
 
         itemsImageResources.recycle();
+    }
+
+    public void deleteItem(ShoppingItem item){
+        DocumentReference ref = mItems.document(item._getId());
+        ref.delete().addOnSuccessListener(success -> {
+            Log.d(LOG_TAG, "Items deleted");
+        })
+                .addOnFailureListener(failure -> {
+                    Toast.makeText(this, "Item can not be deleted", Toast.LENGTH_LONG).show();
+                });
+
+        queryData();
+        mNotificationHandler.cancel();
     }
 
     @Override
@@ -225,7 +259,7 @@ public class ShopListActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void updateAlertIcon() {
+    public void updateAlertIcon(ShoppingItem item) {
         cartItems = (cartItems + 1);
         if (0 < cartItems) {
             countTextView.setText(String.valueOf(cartItems));
@@ -234,11 +268,42 @@ public class ShopListActivity extends AppCompatActivity {
         }
 
         redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
+
+        mItems.document(item._getId()).update("cartedCount", item.getCartedCount() + 1).addOnFailureListener(failer -> {
+            Toast.makeText(this, "nope", Toast.LENGTH_LONG).show();
+        });
+
+        mNotificationHandler.send(item.getName());
+
+        queryData();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(powerReciever);
+    }
+
+    private void setAlarmManager(){
+        long repeatInterval = 60 * 1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        long triggertime = SystemClock.elapsedRealtime() + repeatInterval;
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE);
+
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggertime, repeatInterval, pendingIntent);
+
+        //mAlarmManager.cancel(pendingIntent);
+    }
+
+    private void setJobScheduler(){
+        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
+        int hardDeadLine = 5000;
+
+        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
+        JobInfo.Builder builder = new JobInfo.Builder(0, name).setRequiredNetworkType(networkType).setOverrideDeadline(hardDeadLine);
+
+        mJobScheduler.schedule(builder.build());
+        //mJobScheduler.cancel(0);
     }
 }

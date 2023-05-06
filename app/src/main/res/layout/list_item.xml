@@ -60,14 +60,28 @@
             android:textColor="@color/red"
             android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:id="@+id/add_to_cart"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/price"
-            android:text="Kosárba"
-            android:backgroundTint="@color/lightred"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/add_to_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/to_cart"/>
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/delete"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
