@@ -57,7 +57,7 @@
             android:layout_below="@id/subTitle"
             android:layout_marginBottom="12dp"
             android:padding="8dp"
-            android:textColor="@color/red"
+            android:textColor="@color/black"
             android:layout_centerHorizontal="true"/>
 
         <LinearLayout
@@ -68,17 +68,22 @@
 
             <Button
                 android:id="@+id/add_to_cart"
-                android:layout_width="wrap_content"
+                android:layout_width="54dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="@string/to_cart"/>
+                android:backgroundTint="@color/lightred"
+                android:contentDescription="Add item"
+                android:drawableLeft="@drawable/ic_shopping_cart" />
 
             <Button
                 android:id="@+id/delete"
-                android:layout_width="wrap_content"
+                android:layout_width="52dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="@string/delete"/>
+                android:backgroundTint="@color/lightred"
+                android:drawableLeft="@drawable/baseline_delete_forever_24"
+                android:contentDescription="Delete item"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

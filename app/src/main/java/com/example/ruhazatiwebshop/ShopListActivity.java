@@ -250,12 +250,7 @@ public class ShopListActivity extends AppCompatActivity {
         redCircle = (FrameLayout) rootView.findViewById(R.id.view_alert_red_circle);
         countTextView = (TextView) rootView.findViewById(R.id.view_alert_count_textview);
 
-        rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onOptionsItemSelected(alertMenuItem);
-            }
-        });
+        rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -285,7 +280,7 @@ public class ShopListActivity extends AppCompatActivity {
     }
 
     private void setAlarmManager(){
-        long repeatInterval = 60 * 1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        long repeatInterval = 60 * 1000;
         long triggertime = SystemClock.elapsedRealtime() + repeatInterval;
 
         Intent intent = new Intent(this, AlarmReceiver.class);

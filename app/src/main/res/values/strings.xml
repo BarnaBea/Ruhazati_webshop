@@ -20,16 +20,40 @@
 
 
     <string-array name="shopping_item_names">
-        <item>Nyári blúz</item>
-        <item>Lila póló</item>
-        <item>Piros póló</item>
+        <item>Szürke pulóver</item>
+        <item>Krémszínű pulóver</item>
+        <item>Fehér szoknya</item>
+        <item>Fekete nadrág</item>
+        <item>Fekete szoknya</item>
+        <item>Krémszínű nyári ruha</item>
+        <item>Lila pulóver</item>
+        <item>Lila nadrág</item>
+        <item>Színes nadrág</item>
+        <item>Piros nadrág</item>
+        <item>Rózsás nyári ruha</item>
+        <item>Rózsaszín baseball sapka</item>
+        <item>Fehér nyári felső</item>
+        <item>Virágos top</item>
+        <item>Virágos ruha</item>
 
     </string-array>
 
     <string-array name="shopping_item_desc">
-        <item>Nyári blúz</item>
-        <item>Lila póló</item>
-        <item>Piros póló</item>
+        <item>Kényelmes pulóver. Hossza kb. 60 cm-től (M. 36/38) kb. 70 cm-ig (M. 48/50), géppel mosható. </item>
+        <item>Kényelmes pulóver. Hossza kb. 60 cm-től (M. 36/38) kb. 70 cm-ig (M. 48/50), géppel mosható.</item>
+        <item>Sztreccs szoknya Lycrával fehér 4-zsebes fazonban, elasztikus anyagból. Hossza a 42-es méretben kb. 50 cm, géppel mosható.</item>
+        <item>Bő nadrág. Klasszikus bő nadrág zsebekkel. Könnyed, bő szabásvonalú nadrág, kellemes szövött anyagból, oldalain divatos zsebekkel és részben gumis derékpánttal. Belső szárhossz a 38-as méretben kb. 75 cm, géppel mosható.</item>
+        <item>Virágmintás szoknya fekete/mintás. Rövid, nyomott mintás szoknya. Hossza a 38-as méretben kb. 46 cm.</item>
+        <item>Krémszínű nyári ruha</item>
+        <item>Kényelmes pulóver. Hossza kb. 60 cm-től (M. 36/38) kb. 70 cm-ig (M. 48/50), géppel mosható.</item>
+        <item>Bő nadrág. Klasszikus bő nadrág zsebekkel. Könnyed, bő szabásvonalú nadrág, kellemes szövött anyagból, oldalain divatos zsebekkel és részben gumis derékpánttal. Belső szárhossz a 38-as méretben kb. 75 cm, géppel mosható.</item>
+        <item>Vékony twill nadrág, Ballon Fit fekete. Nyári nadrág különleges fazonban, kényelmes derékpánttal.</item>
+        <item>Vékony és kényelmes alap sportnadrág oldalsó zsebekkel és puha anyagból. Ideális könnyed sportokhoz és edzésekhez. Gumis derékpánttal és zsinórbehúzóval a derekán, valamint oldalsó zsebekkel. Belső szárhossz a 40/42-es méretben kb. 77 cm, géppel mosható.</item>
+        <item>Rózsás nyári ruha</item>
+        <item>Rózsaszín baseball sapka</item>
+        <item>Fehér nyári felső, kötött felsőrésszel. Hossza a 38-as méretben kb. 53 cm.</item>
+        <item>Varázslatosan szép blúz fazonú top lefelé bővülő szabásvonallal és egyedi hátmegoldással. Hossza a 38-as méretben kb. 53 cm.</item>
+        <item>Virágos ruha</item>
 
     </string-array>
 
@@ -37,20 +61,55 @@
         <item>3.5</item>
         <item>5</item>
         <item>4</item>
+        <item>4</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>4</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>4</item>
+        <item>5</item>
+        <item>4</item>
+        <item>4</item>
 
     </array>
 
     <array name="shopping_item_images">
-        <item>@drawable/bluz</item>
-        <item>@drawable/lilapolo</item>
-        <item>@drawable/pirospolo</item>
-
+        <item>@drawable/szurke_pulover</item>
+        <item>@drawable/barna_pulover</item>
+        <item>@drawable/feherszoknya</item>
+        <item>@drawable/feketenadrag</item>
+        <item>@drawable/feketeszoknya</item>
+        <item>@drawable/kremruha</item>
+        <item>@drawable/lila_pulover</item>
+        <item>@drawable/lilanadrag</item>
+        <item>@drawable/nadrag1</item>
+        <item>@drawable/pirosnadrag</item>
+        <item>@drawable/rozsas</item>
+        <item>@drawable/rozsaszinsapka</item>
+        <item>@drawable/top2</item>
+        <item>@drawable/viragos_top</item>
+        <item>@drawable/viragosruha</item>
     </array>
 
     <array name="shopping_item_price">
-        <item>100 Dv</item>
-        <item>150 Dv</item>
-        <item>500 Dv</item>
+        <item>5.990 Ft</item>
+        <item>5.990 Ft</item>
+        <item>3.599 Ft</item>
+        <item>7.590 Ft</item>
+        <item>3.599 Ft</item>
+        <item>14.800 Ft</item>
+        <item>5.990 Ft</item>
+        <item>7.590 Ft</item>
+        <item>6.990 Ft</item>
+        <item>7.590 Ft</item>
+        <item>16.900 Ft</item>
+        <item>2.799 Ft</item>
+        <item>3.200 Ft</item>
+        <item>3.990 Ft</item>
+        <item>17.990 Ft</item>
 
     </array>
 </resources>

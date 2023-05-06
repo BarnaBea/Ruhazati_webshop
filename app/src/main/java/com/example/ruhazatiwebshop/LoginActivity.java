@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     private static final String LOG_TAG = MainActivity.class.getName();
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
     private static final int RC_SIGN_IN = 123;
-    private static final int SECRET_KEY = 99;
     EditText userNameET;
     EditText passwordET;
 
@@ -60,9 +59,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        //Button button = findViewById(R.id.guestLoginButton);
-        //new RandomAsyncTask(button).execute();
-
         getSupportLoaderManager().restartLoader(0,null, this);
 
         Log.i(LOG_TAG, "onCreate");
@@ -86,15 +82,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(LOG_TAG, "signInWithCredential success");
-                    startShopping();
-                }else{
-                    Log.w(LOG_TAG, "signInWithCredential failure", task.getException());
-                }
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            if(task.isSuccessful()){
+                Log.d(LOG_TAG, "signInWithCredential success");
+                startShopping();
+            }else{
+                Log.w(LOG_TAG, "signInWithCredential failure", task.getException());
             }
         });
     }
@@ -104,18 +97,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         String userName = userNameET.getText().toString();
         String password = passwordET.getText().toString();
 
-        //Log.i("MainActivity", "Bejelentkezett: " + userName + ", jelszó: " + password);
-
-        mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(LOG_TAG, "User loged in successfully");
-                    startShopping();
-                }else{
-                    Log.d(LOG_TAG, "User login fail");
-                    Toast.makeText(LoginActivity.this, "User login fail" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
+        mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(this, task -> {
+            if(task.isSuccessful()){
+                Log.d(LOG_TAG, "User loged in successfully");
+                startShopping();
+            }else{
+                Log.d(LOG_TAG, "User login fail");
+                Toast.makeText(LoginActivity.this, "User login fail" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -126,16 +114,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     public void loginAsGuest(View view) {
-        mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(LOG_TAG, "Anonym user loged in successfully");
-                    startShopping();
-                }else{
-                    Log.d(LOG_TAG, "User login fail");
-                    Toast.makeText(LoginActivity.this, "Anonym user login fail" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
+        mAuth.signInAnonymously().addOnCompleteListener(this, task -> {
+            if(task.isSuccessful()){
+                Log.d(LOG_TAG, "Anonym user loged in successfully");
+                startShopping();
+            }else{
+                Log.d(LOG_TAG, "User login fail");
+                Toast.makeText(LoginActivity.this, "Anonym user login fail" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

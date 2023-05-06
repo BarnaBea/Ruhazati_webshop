@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegisterActivity extends AppCompatActivity {
     private static final String LOG_TAG = RegisterActivity.class.getName();
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
-    private static final int SECRET_KEY = 99;
     EditText userNameEditText;
     EditText userEmailEditText;
     EditText passwordEditText;
@@ -34,8 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Bundle bundle = getIntent().getExtras();
-        //int secret_key = bundle.getInt("SECRET_KEY");
         int secret_key = getIntent().getIntExtra("SECRET_KEY", 0);
 
         if(secret_key != 99){
@@ -78,59 +75,49 @@ public class RegisterActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "Regisztrált: " + userName + ", e-mail: " + email);
         //startShopping();
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(LOG_TAG, "User created successfully");
-                    startShopping();
-                }else{
-                    Log.d(LOG_TAG, "User wasn't created successfully");
-                    Toast.makeText(RegisterActivity.this, "User wasn't created successfully" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if(task.isSuccessful()){
+                Log.d(LOG_TAG, "User created successfully");
+                startShopping();
+            }else{
+                Log.d(LOG_TAG, "User wasn't created successfully");
+                Toast.makeText(RegisterActivity.this, "User wasn't created successfully" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void startShopping(/*userdata*/){
         Intent intent = new Intent(this, ShopListActivity.class);
-        //intent.putExtra("SECRET_KEY", SECRET_KEY);
         startActivity(intent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(LOG_TAG, "onStart");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(LOG_TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(LOG_TAG, "onDestroy");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(LOG_TAG, "onPause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(LOG_TAG, "onResume");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i(LOG_TAG, "onRestart");
     }
 }
